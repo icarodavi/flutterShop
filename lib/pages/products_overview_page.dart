@@ -25,6 +25,19 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
       appBar: AppBar(
         title: const Text('Shopping App'),
         actions: [
+          Consumer<Cart>(
+              child: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(AppRoutes.CART);
+                },
+                icon: const Icon(Icons.shopping_cart),
+              ),
+              builder: (context, cart, child) {
+                return Badge(
+                  value: cart.itemsCount.toString(),
+                  child: child!,
+                );
+              }),
           PopupMenuButton(
             itemBuilder: (_) => [
               const PopupMenuItem(
@@ -46,19 +59,6 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
               });
             },
           ),
-          Consumer<Cart>(
-              child: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(AppRoutes.CART);
-                },
-                icon: const Icon(Icons.shopping_cart),
-              ),
-              builder: (context, cart, child) {
-                return Badge(
-                  value: cart.itemsCount.toString(),
-                  child: child!,
-                );
-              }),
         ],
       ),
       body: ProductGrid(_showFavoriteOnly!),
