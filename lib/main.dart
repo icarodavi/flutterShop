@@ -32,16 +32,16 @@ class MyApp extends StatelessWidget {
           title: 'Shopping Application',
           theme: ThemeData(
             fontFamily: 'Lato',
-            primarySwatch: Colors.green,
+            primarySwatch: Colors.purple,
             colorScheme: theme.colorScheme.copyWith(
-              primary: Colors.green,
+              primary: Colors.purple,
               secondary: Colors.deepOrange,
             ),
           ),
           home: ProductsOverviewPage(),
           routes: {
             AppRoutes.PRODUCT_DETAIL: (context) => const ProductDetailPage(),
-            AppRoutes.CART: (context) => const CartPage(),
+            AppRoutes.CART: (context) => CartPage(),
           }),
     );
   }
