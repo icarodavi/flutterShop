@@ -7,12 +7,12 @@ import 'package:shop/utils/app_routes.dart';
 import '../components/product_grid.dart';
 
 enum FilterOptions {
-  Favorite,
-  All,
+  favorite,
+  all,
 }
 
 class ProductsOverviewPage extends StatefulWidget {
-  ProductsOverviewPage({Key? key}) : super(key: key);
+  const ProductsOverviewPage({Key? key}) : super(key: key);
 
   @override
   State<ProductsOverviewPage> createState() => _ProductsOverviewPageState();
@@ -23,7 +23,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: AppDrawer(),
+      drawer: const AppDrawer(),
       appBar: AppBar(
         title: const Text('Shopping App'),
         actions: [
@@ -44,16 +44,16 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
             itemBuilder: (_) => [
               const PopupMenuItem(
                 child: Text('Somente favoritos'),
-                value: FilterOptions.Favorite,
+                value: FilterOptions.favorite,
               ),
               const PopupMenuItem(
                 child: Text('Todos produtos'),
-                value: FilterOptions.All,
+                value: FilterOptions.all,
               ),
             ],
             onSelected: (selectedValue) {
               setState(() {
-                if (selectedValue == FilterOptions.Favorite) {
+                if (selectedValue == FilterOptions.favorite) {
                   _showFavoriteOnly = true;
                 } else {
                   _showFavoriteOnly = false;

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/models/product.dart';
@@ -20,7 +18,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final _formData = Map<String, Object>();
+  final _formData = <String, Object>{};
   @override
   void initState() {
     super.initState();

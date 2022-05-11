@@ -5,7 +5,7 @@ import 'package:shop/models/order.dart';
 class OrderWidget extends StatefulWidget {
   final Order order;
 
-  OrderWidget(this.order, {Key? key}) : super(key: key);
+  const OrderWidget(this.order, {Key? key}) : super(key: key);
 
   @override
   State<OrderWidget> createState() => _OrderWidgetState();
