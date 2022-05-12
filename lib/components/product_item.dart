@@ -10,6 +10,7 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final msg = ScaffoldMessenger.of(context);
     return ListTile(
       title: Text(product.name),
       leading: CircleAvatar(
@@ -54,12 +55,23 @@ class ProductItem extends StatelessWidget {
                         ],
                       );
                     },
-                  ).then((value) {
+                  ).then((value) async {
                     if (value!) {
-                      Provider.of<ProductList>(
-                        context,
-                        listen: false,
-                      ).removeProduct(product);
+                      try {
+                        await Provider.of<ProductList>(
+                          context,
+                          listen: false,
+                        ).removeProduct(product);
+                      } catch (err) {
+                        msg.showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'ERRO: ${err.toString()}',
+                            ),
+                          ),
+                        );
+                        print(err.toString());
+                      }
                     }
                   });
                 },
