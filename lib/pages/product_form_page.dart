@@ -74,7 +74,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Ocorreu um erro!'),
-          content: Text('Erro ao salvar o produto. ${err}'),
+          content: Text('Erro ao salvar o produto. ${err.toString()}'),
           actions: [
             TextButton(
                 onPressed: () => Navigator.of(context).pop(),

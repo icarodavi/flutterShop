@@ -70,7 +70,6 @@ class ProductItem extends StatelessWidget {
                             ),
                           ),
                         );
-                        print(err.toString());
                       }
                     }
                   });
