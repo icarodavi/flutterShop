@@ -3,36 +3,51 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shop/data/dummy_data.dart';
+
 import 'package:shop/exceptions/http_exception.dart';
 import 'package:shop/models/product.dart';
 import 'package:shop/utils/constants.dart';
 
 class ProductList with ChangeNotifier {
-  List<Product> _items = dummyProducts;
+  // ignore: prefer_final_fields
+  List<Product> _items;
+  final String? _userId;
   List<Product> get items => [..._items];
   List<Product> get favoriteItems =>
       items.where((element) => element.isFavorite).toList();
   final String? _token;
 
-  ProductList(this._token, this._items);
+  ProductList([
+    this._token = '',
+    this._userId = '',
+    this._items = const [],
+  ]);
 
   Future<void> loadProducts() async {
     _items.clear();
-    _items = dummyProducts;
     final response = await http.get(
       Uri.parse('${Constants.PRODUCT_BASE_URL}.json?auth=$_token'),
     );
     if (response.body == 'null') return;
     Map<String, dynamic> data = jsonDecode(response.body);
+
+    final favoriteResponse = await http.get(
+      Uri.parse('${Constants.USER_FAVORITES_URL}/$_userId.json?auth=$_token'),
+    );
+
+    Map<String, dynamic> favData = favoriteResponse.body == 'null'
+        ? {}
+        : jsonDecode(favoriteResponse.body);
+
     data.forEach((key, value) {
+      final isFavorite = favData[key] ?? false;
       _items.add(Product(
         id: key,
         name: value['name'],
         description: value['description'],
         price: value['price'],
         imageUrl: value['imageUrl'],
-        isFavorite: value['isFavorite'],
+        isFavorite: isFavorite,
       ));
     });
     notifyListeners();
@@ -46,7 +61,6 @@ class ProductList with ChangeNotifier {
           "description": product.description,
           "price": product.price,
           "imageUrl": product.imageUrl,
-          "isFavorite": product.isFavorite,
         }));
     final id = jsonDecode(response.body)['name'];
     _items.add(Product(
@@ -55,7 +69,6 @@ class ProductList with ChangeNotifier {
       description: product.description,
       price: product.price,
       imageUrl: product.imageUrl,
-      isFavorite: product.isFavorite,
     ));
     notifyListeners();
   }
