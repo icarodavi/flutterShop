@@ -39,15 +39,17 @@ class _OrdersPageState extends State<OrdersPage> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : RefreshIndicator(
-              onRefresh: () => _refreshOrders(context),
-              child: ListView.builder(
-                itemCount: items.length,
-                itemBuilder: ((context, index) {
-                  return OrderWidget(items[index]);
-                }),
-              ),
-            ),
+          : items.isEmpty
+              ? const Center(child: Text('Sem pedidos'))
+              : RefreshIndicator(
+                  onRefresh: () => _refreshOrders(context),
+                  child: ListView.builder(
+                    itemCount: items.length,
+                    itemBuilder: ((context, index) {
+                      return OrderWidget(items[index]);
+                    }),
+                  ),
+                ),
       drawer: const AppDrawer(),
     );
   }

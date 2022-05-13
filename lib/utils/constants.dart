@@ -5,6 +5,6 @@ class Constants {
       'https://shop-cod3r-19509-default-rtdb.firebaseio.com/products';
   static const USER_FAVORITES_URL =
       'https://shop-cod3r-19509-default-rtdb.firebaseio.com/userFavorites';
-  static const ORDER_BASE_URL =
-      'https://shop-cod3r-19509-default-rtdb.firebaseio.com/orders';
+  static const ORDERS_BASE_URL =
+      'https://shop-cod3r-19509-default-rtdb.firebaseio.com/userOrders';
 }
