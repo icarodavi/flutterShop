@@ -12,6 +12,7 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final msg = ScaffoldMessenger.of(context);
     final cart = Provider.of<Cart>(context);
     final items = cart.items.values.toList();
     return Scaffold(
@@ -41,22 +42,7 @@ class CartPage extends StatelessWidget {
                       backgroundColor: Theme.of(context).colorScheme.primary,
                     ),
                     const Spacer(),
-                    TextButton(
-                      onPressed: () {
-                        Provider.of<OrderList>(
-                          context,
-                          listen: false,
-                        ).addOrder(cart);
-                        cart.clear();
-                        // Navigator.of(context).pushNamed(AppRoutes.ORDERS);
-                      },
-                      child: const Text('Comprar'),
-                      style: TextButton.styleFrom(
-                        textStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                    ),
+                    CartButton(cart: cart, msg: msg),
                   ]),
             ),
           ),
@@ -67,5 +53,60 @@ class CartPage extends StatelessWidget {
             ),
           )
         ]));
+  }
+}
+
+class CartButton extends StatefulWidget {
+  const CartButton({
+    Key? key,
+    required this.cart,
+    required this.msg,
+  }) : super(key: key);
+
+  final Cart cart;
+  final ScaffoldMessengerState msg;
+
+  @override
+  State<CartButton> createState() => _CartButtonState();
+}
+
+class _CartButtonState extends State<CartButton> {
+  bool _isLoading = false;
+  @override
+  Widget build(BuildContext context) {
+    return _isLoading
+        ? const CircularProgressIndicator()
+        : TextButton(
+            onPressed: () async {
+              if (widget.cart.itemsCount == 0) {
+                null;
+              } else {
+                try {
+                  setState(() {
+                    _isLoading = true;
+                  });
+                  await Provider.of<OrderList>(
+                    context,
+                    listen: false,
+                  ).addOrder(widget.cart);
+                  widget.cart.clear();
+                } catch (err) {
+                  widget.msg.showSnackBar(const SnackBar(
+                      content: Text('Erro ao salvar seu pedido!')));
+                } finally {
+                  setState(() {
+                    _isLoading = false;
+                  });
+                }
+              }
+              // Navigator.of(context).pushNamed(AppRoutes.ORDERS);
+            },
+            child: const Text('Comprar'),
+            style: TextButton.styleFrom(
+              textStyle: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          );
   }
 }
