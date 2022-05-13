@@ -10,16 +10,18 @@ import 'package:shop/utils/constants.dart';
 
 class ProductList with ChangeNotifier {
   List<Product> _items = dummyProducts;
-
   List<Product> get items => [..._items];
   List<Product> get favoriteItems =>
       items.where((element) => element.isFavorite).toList();
+  final String? _token;
+
+  ProductList(this._token, this._items);
 
   Future<void> loadProducts() async {
     _items.clear();
     _items = dummyProducts;
     final response = await http.get(
-      Uri.parse('${Constants.PRODUCT_BASE_URL}.json'),
+      Uri.parse('${Constants.PRODUCT_BASE_URL}.json?auth=$_token'),
     );
     if (response.body == 'null') return;
     Map<String, dynamic> data = jsonDecode(response.body);
@@ -37,15 +39,15 @@ class ProductList with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    final response =
-        await http.post(Uri.parse('${Constants.PRODUCT_BASE_URL}.json'),
-            body: jsonEncode({
-              "name": product.name,
-              "description": product.description,
-              "price": product.price,
-              "imageUrl": product.imageUrl,
-              "isFavorite": product.isFavorite,
-            }));
+    final response = await http.post(
+        Uri.parse('${Constants.PRODUCT_BASE_URL}.json?auth=$_token'),
+        body: jsonEncode({
+          "name": product.name,
+          "description": product.description,
+          "price": product.price,
+          "imageUrl": product.imageUrl,
+          "isFavorite": product.isFavorite,
+        }));
     final id = jsonDecode(response.body)['name'];
     _items.add(Product(
       id: id,
@@ -63,7 +65,8 @@ class ProductList with ChangeNotifier {
 
     if (index >= 0) {
       await http.patch(
-          Uri.parse('${Constants.PRODUCT_BASE_URL}/${product.id}.json'),
+          Uri.parse(
+              '${Constants.PRODUCT_BASE_URL}/${product.id}.json?auth=$_token'),
           body: jsonEncode({
             "name": product.name,
             "description": product.description,
@@ -99,7 +102,8 @@ class ProductList with ChangeNotifier {
       _items.remove(product);
       notifyListeners();
       final response = await http.delete(
-        Uri.parse('${Constants.PRODUCT_BASE_URL}/${product.id}.json'),
+        Uri.parse(
+            '${Constants.PRODUCT_BASE_URL}/${product.id}.json?auth=$_token '),
       );
 
       if (response.statusCode >= 400) {
