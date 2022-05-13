@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop/exceptions/http_exception.dart';
 import 'package:shop/models/cart.dart';
+import 'package:shop/models/cart_item.dart';
 import 'package:shop/models/order.dart';
 import 'package:shop/utils/constants.dart';
 
@@ -50,6 +51,32 @@ class OrderList with ChangeNotifier {
           date: date,
           products: cart.items.values.toList(),
         ));
+    notifyListeners();
+  }
+
+  Future<void> loadOrders() async {
+    _items.clear();
+    final response = await http.get(
+      Uri.parse('${Constants.ORDER_BASE_URL}.json'),
+    );
+    if (response.body == 'null') return;
+    Map<String, dynamic> data = jsonDecode(response.body);
+    data.forEach((key, value) {
+      _items.add(Order(
+        id: key,
+        total: value['total'],
+        products: (value['products'] as List<dynamic>)
+            .map((e) => CartItem(
+                  id: e['id'],
+                  productId: e['productId'],
+                  name: e['name'],
+                  quantity: e['quantity'],
+                  price: e['price'],
+                ))
+            .toList(),
+        date: DateTime.parse(value['date']),
+      ));
+    });
     notifyListeners();
   }
 }

@@ -54,7 +54,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                                   fontSize: 16, fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              '${e.price} x ${e.quantity}',
+                              '${formatter.format(e.price)} x ${e.quantity}',
                               style: const TextStyle(
                                   fontSize: 16, color: Colors.grey),
                             )
