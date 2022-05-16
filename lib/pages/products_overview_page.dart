@@ -39,7 +39,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
     return Scaffold(
       drawer: const AppDrawer(),
       appBar: AppBar(
-        title: const Text('Shopping App'),
+        title: const Text('Minha loja'),
         actions: [
           Consumer<Cart>(
               child: IconButton(
