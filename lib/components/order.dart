@@ -13,32 +13,37 @@ class OrderWidget extends StatefulWidget {
 
 class _OrderWidgetState extends State<OrderWidget> {
   bool _isExpanded = false;
+
   final NumberFormat formatter = NumberFormat.simpleCurrency(locale: 'pt_BR');
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(5),
-      child: Column(
-        children: [
-          ListTile(
-            title: Text(
-              formatter.format(widget.order.total),
+    final double itemsHeight = (widget.order.products.length * 25) + 10;
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      height: _isExpanded ? itemsHeight + 80 : 80,
+      child: Card(
+        margin: const EdgeInsets.all(5),
+        child: Column(
+          children: [
+            ListTile(
+              title: Text(
+                formatter.format(widget.order.total),
+              ),
+              subtitle:
+                  Text(DateFormat('dd/MM/yyy HH:mm').format(widget.order.date)),
+              trailing: IconButton(
+                onPressed: () {
+                  setState(() {
+                    _isExpanded = !_isExpanded;
+                  });
+                },
+                icon: Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
+              ),
             ),
-            subtitle:
-                Text(DateFormat('dd/MM/yyy HH:mm').format(widget.order.date)),
-            trailing: IconButton(
-              onPressed: () {
-                setState(() {
-                  _isExpanded = !_isExpanded;
-                });
-              },
-              icon: Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
-            ),
-          ),
-          if (_isExpanded)
-            Container(
-              height: (widget.order.products.length * 25) + 10,
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              height: _isExpanded ? itemsHeight : 0.0,
               padding: const EdgeInsets.symmetric(
                 horizontal: 15,
                 vertical: 4,
@@ -63,7 +68,8 @@ class _OrderWidgetState extends State<OrderWidget> {
                     .toList(),
               ),
             ),
-        ],
+          ],
+        ),
       ),
     );
   }
