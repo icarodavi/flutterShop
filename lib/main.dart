@@ -24,15 +24,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = ThemeData(
-      pageTransitionsTheme: PageTransitionsTheme(builders: {
-        TargetPlatform.iOS: CustomPageTransitionsBuilder(),
-        TargetPlatform.android: CustomPageTransitionsBuilder(),
-        TargetPlatform.windows: CustomPageTransitionsBuilder(),
-        TargetPlatform.linux: CustomPageTransitionsBuilder(),
-        TargetPlatform.macOS: CustomPageTransitionsBuilder(),
-      }),
-    );
+    final ThemeData theme = ThemeData();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -68,6 +60,13 @@ class MyApp extends StatelessWidget {
               primary: Colors.purple,
               secondary: Colors.deepOrange,
             ),
+            pageTransitionsTheme: PageTransitionsTheme(builders: {
+              TargetPlatform.iOS: CustomPageTransitionsBuilder(),
+              TargetPlatform.android: CustomPageTransitionsBuilder(),
+              TargetPlatform.windows: CustomPageTransitionsBuilder(),
+              TargetPlatform.linux: CustomPageTransitionsBuilder(),
+              TargetPlatform.macOS: CustomPageTransitionsBuilder(),
+            }),
           ),
           // home: ProductsOverviewPage(),
           routes: {

@@ -21,7 +21,7 @@ class _OrderWidgetState extends State<OrderWidget> {
     final double itemsHeight = (widget.order.products.length * 25) + 10;
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      height: _isExpanded ? itemsHeight + 80 : 80,
+      height: _isExpanded ? itemsHeight + 85 : 85,
       child: Card(
         margin: const EdgeInsets.all(5),
         child: Column(
